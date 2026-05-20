@@ -1,4 +1,7 @@
 # File cấu hình Fly.io cho Worker (Bot Telegram)
+app = "telegram-translator"
+primary_region = "sin"
+
 # TUYỆT ĐỐI KHÔNG thêm [http_service] hay [[services]] vào file này
 # vì bot của chúng ta chạy ngầm (polling), không phải là trang web mở port 8080.
 
