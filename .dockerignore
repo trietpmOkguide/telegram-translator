@@ -1,0 +1,7 @@
+# Bỏ qua các file/thư mục không cần đẩy lên server
+venv/
+.env
+__pycache__/
+*.pyc
+.git/
+.DS_Store
