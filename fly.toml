@@ -1,0 +1,9 @@
+# File cấu hình Fly.io cho Worker (Bot Telegram)
+# TUYỆT ĐỐI KHÔNG thêm [http_service] hay [[services]] vào file này
+# vì bot của chúng ta chạy ngầm (polling), không phải là trang web mở port 8080.
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  # Các biến môi trường không nhạy cảm có thể để ở đây
