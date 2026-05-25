@@ -36,12 +36,30 @@ def _detect_language(text: str, api_key: str) -> str:
 
 def _translate_text(text: str, target_lang: str, api_key: str) -> str:
     url = f"https://translation.googleapis.com/language/translate/v2?key={api_key}"
-    data = json.dumps({"q": text, "target": target_lang}).encode("utf-8")
+    lines = text.split("\n")
+    to_translate = []
+    indices = []
+    
+    for i, line in enumerate(lines):
+        if not _should_skip(line):
+            to_translate.append(line)
+            indices.append(i)
+            
+    if not to_translate:
+        return text
+
+    data = json.dumps({"q": to_translate, "target": target_lang, "format": "text"}).encode("utf-8")
     req = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json"})
     with urllib.request.urlopen(req) as response:
         result = json.loads(response.read().decode("utf-8"))
-        translated_text = result["data"]["translations"][0]["translatedText"]
-        return html.unescape(translated_text)
+        translations = result["data"]["translations"]
+        translated_texts = [html.unescape(t["translatedText"]) for t in translations]
+        
+    result_lines = list(lines)
+    for idx, translated_val in zip(indices, translated_texts):
+        result_lines[idx] = translated_val
+        
+    return "\n".join(result_lines)
 
 
 def translate_message(text: str) -> dict | None:
